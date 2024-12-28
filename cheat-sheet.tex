@@ -1,0 +1,340 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Artikel und Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[
+11pt,
+footheight=40pt
+]{scrartcl}
+\usepackage{ngerman}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{lastpage}	% get lastPageRef
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{csquotes}
+\usepackage{tabularx}
+\usepackage{paracol}
+\usepackage[table]{xcolor}
+\usepackage{array} % Für erweiterte Tabellenformate
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Page Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ landscape,
+ top=20mm,
+ left=15mm,
+ right=15mm,
+ bottom=20mm
+ }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Kopf- und Fußzeilen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[headsepline]{scrlayer-scrpage}
+\setheadsepline{1pt}
+\pagestyle{scrheadings}
+
+\ohead{LF10b - Lehrkraft: Soulier - Version 0.1 $\alpha$}%\includegraphics[height=1.7cm]{drslogo.png}}
+\ihead{\textbf{\LARGE PowerShell - Cheat Sheet}}
+%\ohead{\LARGE $ \mathbf{f(xx)}\ \ $ \\ \small Herr Soulier}
+%\ifoot{innen}
+\cfoot{Seite \thepage\ von \pageref{LastPage}}
+%\ofoot{außen}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Definition der Variablen, um Textteile ein- oder auszublenden %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newif\ifhilfe \hilfetrue
+\newif\ifdateisysteme \dateisystemetrue
+\newif\ifpipelining \pipeliningtrue
+\newif\ifcmdlet \cmdlettrue
+\newif\ifkanaele \kanaeletrue
+\newif\ifalias \aliastrue
+\newif\ifdateiverwaltung \dateiverwaltungtrue
+\newif\ifexcitingstuff \excitingstufftrue
+\newif\ifarrays \arraystrue
+\newif\ifloops \loopstrue
+\newif \ifcomparisonoperators \comparisonoperatorstrue
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Einstellungen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\parindent}{0pt}
+
+\newcounter{cntA}  	
+\setcounter{cntA}{0}
+
+\renewcommand{\labelenumi}{\alph{enumi})}
+%\renewcommand{\labelenumi}{\arabic{enumi})}
+
+\setlength{\columnsep}{1cm} % Abstand zwischen den Spalten
+
+% Definition der Farben
+% Definition von blassen Farben
+\definecolor{lightblue}{RGB}{230, 240, 255}  % Helles Blau
+\definecolor{lightgreen}{RGB}{240, 255, 240} % Helles Grün
+\definecolor{lightyellow}{RGB}{255, 250, 220} % Helles Gelb
+\definecolor{lightpink}{RGB}{255, 230, 240}  % Helles Rosa
+\definecolor{lightgray}{RGB}{245, 245, 245}  % Helles Grau
+\definecolor{lightpeach}{RGB}{255, 240, 230} % Heller Pfirsichton
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{paracol}{3} % 4-Spalten-Layout
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Erste Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \switchcolumn[0] % Starte in der ersten Spalte
+    \subsection*{Interaktiver Modus}
+    \ifcmdlet
+	\subsubsection*{Commandlet-Aufbau}
+	\begin{tabular}{|p{0.25\linewidth } p{0.70\linewidth}|}
+	\hline
+	    \texttt{Verb-Noun} & \textbf{Verb:} Get, Add, Copy, Set, ... \ \ \ \ \textbf{Noun:} Process, Item, Help, ... \\ \hline
+	\end{tabular}
+	\fi
+	
+    \ifhilfe
+    \subsubsection*{Hilfefunktionen}
+    \begin{tabular}{p{0.44\linewidth} p{0.56\linewidth}}
+	    \rowcolor{lightblue}\texttt{Update-Help} & Als Admin: aktualisiert Hilfedateien\\
+	    \texttt{Get-Help <cmd>} & Zeigt Hilfe zu Cmdlet \\
+	    \texttt{Get-Help *Item} & Zeigt alle Cmdlets, die mit Item enden\\
+	    \rowcolor{lightblue}\texttt{Get-Command <cmd>} & Hilfe zu Commands (\texttt{-Verb Get} holt alle Get-Cmdlets) \\
+	    \texttt{Get-Help about\_*} & Zeigt alle About-Docs (z. B. \texttt{about\_if}). \\
+	    \rowcolor{lightblue} \texttt{<var> | Get-Member} & Variablen und Commandlets untersuchen \\
+	    \texttt{<Cmd> -WhatIf} & Bei kritischen Aktionen Ausführung emulieren 
+	\end{tabular}
+	\fi
+	
+	\ifalias 
+	\subsubsection*{Aliase}
+	\begin{tabular}{p{0.5\linewidth} p{0.5\linewidth}}
+	    \rowcolor{lightgray} \texttt{New-Alias} & Erstellt neuen Alias \\
+	     \texttt{Remove-Alias} & Löscht einen Alias \\
+	     \rowcolor{lightblue} \texttt{Get-Alias -Definition <cmd>} & Zeigt alle Aliase zu einem Commandlet \\
+	\end{tabular} 
+	\fi
+	
+	\ifkanaele 
+	\subsubsection*{Standardkanäle}
+		\begin{tabular}{p{0.32\linewidth} p{0.68\linewidth}}
+		\rowcolor{lightpeach} \texttt{<a> i> <file>} & Leitet Stream $i$ von $a$ in $file$ \\
+		\texttt{<a> i>\&j} & Leitet Stream $i$ von a in Stream $j$ \\
+	\end{tabular}
+
+	\begin{tabular}{p{0.04\linewidth} p{0.25\linewidth} p{0.20\linewidth} || p{0.04\linewidth} p{0.30\linewidth}}
+		\textbf{Nr} & \textbf{PowerShell}  & \textbf{Linux} & \textbf{Nr} & \textbf{PowerShell} \\ \hline
+	    \rowcolor{lightpeach} 0 &  & \texttt{stdin} & 4 & \texttt{verbose}\\
+	    1 & \texttt{sucess} & \texttt{stdout}  & 5 & \texttt{debug}\\
+	    \rowcolor{lightpeach} 2 & \texttt{error} & \texttt{stderr} & 6 & \texttt{information}\\
+	    3 & \texttt{warning}  &  & * & \texttt{all streams}\\
+	\end{tabular}
+	\fi
+	
+	\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Zweite Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\switchcolumn
+		\ifdateisysteme
+	\subsubsection*{Dateisystem}
+	Ordner wechseln, Items anlegen, copieren, löschen, Infos holen, pwd, tree?, find?\\
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+	    \rowcolor{lightpink} \texttt{Set-Location} & In Ordner wechseln \\
+	    \texttt{Get-Location} & Aktuellen Ornerpfad holen \\
+	    \rowcolor{lightpink} \texttt{New-Item} & Erstellt Datei oder Ordner \\
+	    \texttt{Copy-Item} & Kopiert Datei oder Ordner \\
+	    \rowcolor{lightpink} \texttt{Move-Item} & Bewegt Datei oder Ordner \\
+	    \texttt{Remove-Item} & Löscht Datei oder Ordner \\
+	    \rowcolor{lightpink} \texttt{Get-Item} & Holt Meta-Informationen eines Items (z. B. Datei) ein\\
+	    \rowcolor{lightpink} \texttt{Set-Item} & Setzt Meta-Informationen\\
+	    \texttt{Get-Content} & Liest Inhalt einer Datei ein\\
+	    \rowcolor{lightpink} \texttt{Get-ChildItem} & Holt ein Item und seine Kinder-Items (Unterordner)\\
+	    \texttt{Tree} & Zeigt Ordner rekursiv in Baumstruktur (nicht PS)\\
+	\end{tabular}
+	\fi
+	
+	\ifexcitingstuff 
+	\subsubsection*{Nützliche Commandlets (kleine Auswahl)}
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+		\rowcolor{lightpink} \texttt{Get-Date} & Holt das aktuelle Datum \\
+	    \texttt{Write-Host} & Erzeugt eine Ausgabe auf \texttt{stdout} \\
+	    \rowcolor{lightpink} \texttt{Write-Debug 'msg' -Debug} & Schreibt eine Debugnachricht und aktiviert den Debug-Modus \\
+	\end{tabular}
+	\fi
+	
+	\ifcomparisonoperators 
+	\subsubsection*{Grundlagen Vergleichsoperatoren}
+	Vergleichsoperatoren können überall da genutzt werden, wo Ausdrücke ausgewertet werden.\\
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+		\rowcolor{lightpink} \texttt{\$a -eq 2} & Vergleich auf Gleichheit \\
+		 \texttt{\$a -gt 2} & Vergleich auf Größer \\
+		\rowcolor{lightpink} \texttt{\$a -like \dq W*\dq} & Vergleich auf Wildcard-Pattern eines Strings \\
+	    \multicolumn{2}{l}{\texttt{Get-Help about\_Comparison\_Operators}} \\
+	\end{tabular}
+	\fi
+	
+	\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Dritte Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \switchcolumn % Wechsel in die dritte Spalte
+    	\ifpipelining 
+	\subsubsection*{Pipelining}
+	\begin{tabular}{p{0.42\linewidth} p{0.58\linewidth}}
+		\rowcolor{lightgreen} \texttt{<a> | <b>} & Leitet \texttt{stdout} von $a$ in \texttt{stdin} von $b$ \\
+	    \texttt{Where-Object\{ \}} & Filtert Objekte basierend auf einer Bedingung. \\
+	    \rowcolor{lightgreen} \texttt{Select-Object} & Wählt bestimmte Eigenschaften eines Objekts aus. \\
+	    \texttt{Sort-Object} & Sortiert Objekte nach einem bestimmten Kriterium. \\
+	    \rowcolor{lightgreen} \texttt{Foreach-Object\{ \}} & Anweisungen pro Objekt ausführen \\
+	    \texttt{Group-Object} & Gruppiert anhand einer Eigenschaft der Objekte. \\
+	    \rowcolor{lightgreen} \texttt{Get-Member} & Metadaten zu Objekt ausgeben \\
+	    \texttt{Measure-Object} & Min, Max, Sum, Avg \\
+	    \rowcolor{lightgreen} \texttt{Compare-Object} & Zwei Objektmengen vergleichen \\
+	    \texttt{Format-List} & Ausgabe formatieren (viele Format-Varianten) \\
+	    \rowcolor{lightgreen} \texttt{Tee-Object <a> | <b>} & Splittet \texttt{stdout} in $a$ und $b$ auf \\
+	    \texttt{Get-Help about\_Pipelines} & Hilfeartikel zu Pipelines \\ \hline
+	    \rowcolor{lightgreen} \texttt{Out-Null} & Unterdrückt Output in einer Pipeline \\
+	    \texttt{Out-Printer} & Sendet Output an  Drucker \\
+	    \rowcolor{lightgreen} \texttt{Out-File} & Sendet Output an Datei \\
+	\end{tabular}
+	\fi
+	
+	\newpage
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Zweite Seite %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Erste Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \switchcolumn[0] % Starte in der ersten Spalte
+     
+    	\subsection*{Skripting}
+   	\ifexcitingstuff 
+	\subsubsection*{Parameter in Skripten}
+		\begin{tabular}{|p{1.05\linewidth }|}
+	\hline
+	    \texttt{./script.ps1 <arg1> [, ..., <argN>]} \\ \hline
+	\end{tabular} 
+	
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+	    \rowcolor{lightyellow} \texttt{\$args.Count} & Anzahl der Argumente prüfen \\
+	    \rowcolor{lightyellow} \texttt{\$args.[i]} & \textbf{Positionale} Argumente an Stelle $i$ auslesen \\
+	\end{tabular}
+	
+		\begin{tabular}{|p{1.05\linewidth }|}
+	\hline
+	    \texttt{./script.ps1 -par1 <w> [, ..., -parN <w>]} \\ \hline
+	\end{tabular} 
+	
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+	    \rowcolor{lightyellow} \texttt{param([typ]\$par1, ... [typ]\$parN)} & \textbf{Benannte} Parameter mit Typ definieren. \\
+	\end{tabular}
+	\fi
+	
+	\ifexcitingstuff 
+	\subsubsection*{Umgang mit Variablen}
+	\begin{tabular}{p{0.42\linewidth} p{0.58\linewidth}}
+	    \rowcolor{lightblue} \texttt{[int] \$x = 5} & Zuweisung einer typisierten Variablen (Typ ist  optional) \\
+	    \texttt{[int] \$x = \dq3.45\dq\ -as [Int]} & Konvertiert einen String-Wert in Int und schreibt ihn nach \$x \\
+	    \rowcolor{lightblue} \texttt{\$x.GetType()} & Liefert Typinfos von \$x \\
+		\texttt{\$x.GetType(). FullName} & Liefert Typnamen von \$x \\
+	    \rowcolor{lightblue} \texttt{Clear-Variable x} & Löscht \textbf{Inhalt} von \$x \\
+	    \texttt{Remove-Variable x} & Löscht \textbf{Deklaration} von \$x \\
+	    \rowcolor{lightblue} \texttt{\$true \$false} & Wahr/falsch \\
+	    \texttt{\$Home} & Home-Folder des Nutzers\\
+	    \rowcolor{lightblue} \texttt{\$PSHome} & Installationsordner von PS\\
+	    \texttt{\$Error} & Liste aller Fehler seit Start der PowerShell\\
+	    \rowcolor{lightblue} \texttt{Get-Item Variable:H*} & Zeigt alle definierten Variablen an, die mit H beginnen\\
+	    \texttt{\$x | Get-Member} & Zeigt Typ, Member, Methoden zu der Variablen an\\
+	    \texttt{Get-Help about\_Variables} & Hilfeartikel zu Variablen\\
+	\end{tabular}
+	\fi
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Zweite Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\switchcolumn
+	
+	\ifexcitingstuff 
+	\subsubsection*{Umgang mit Strings}
+	\begin{tabular}{p{0.52\linewidth} p{0.48\linewidth}}
+	    \rowcolor{lightgreen} \texttt{\dq Hi\dq} \ bzw. \texttt{'Hi'} bzw. \texttt{@'Hi@'} & Versch. Stringliterale (@-Notation: \dq Here-String\dq ) \\
+	    \texttt{\dq a\dq + \$x + \dq c\dq} & Konkatenation \\
+	    \rowcolor{lightgreen} \texttt{\dq PC \$nr\dq} & Ausdruckauflösung \\
+	    \texttt{\dq Date: \$(Get-Date)\dq} & Ausdruckauflösung \\
+	    \rowcolor{lightgreen} \texttt{\dq x:\textbackslash\$(\$pc)\_VHD.vhdx\dq } & Ausdruckauflösung \\
+	    \texttt{\$a.Substring(4,3)} & Text extrahieren $[5,7]$ \\
+	    \rowcolor{lightgreen}\texttt{\$myArr = \$x -Split \dq<del>\dq} & Splitten String am Delimiter $<$del$>$ auf  \\
+	    \texttt{\$x = \$myArr -Join\dq$<$del$>$\dq} & Verbindet Teilstringe aus myArr in x \\
+	    \rowcolor{lightgreen}\texttt{\$x.replace(\dq ü\dq, \dq ue\dq)} & Case-Sensitives Ersetzten von Teilstrings \\
+	    \texttt{\$x -replace \dq\textbackslash bÖ\dq, \dq Oe\dq} & Ersetzten von Teilstrings m.H. von regulären Ausdrücken \\
+	    \rowcolor{lightgreen}\texttt{\dq\dq\ | Get-Member -MemberType Method} & String-Methoden ansehen \\
+	\end{tabular}
+	\fi
+	
+	\ifexcitingstuff 
+	\subsubsection*{Umgang mit nicht definierten Variablen}
+	\begin{tabular}{p{0.3\linewidth} p{0.7\linewidth}}
+	    \rowcolor{lightyellow} \texttt{\$x ??= \dq n/a\dq} & Nimm x falls definiert, ansonsten schreibe Standardwert hinein \\
+	     \texttt{\$\{x\}?.Property} & Wähle Property aus, falls existent, ansonsten null zurückgeben \\
+	    \rowcolor{lightyellow}\texttt{\$\{arr\}[100]} & Falls \texttt{arr} nicht existiert, gib null zurück \\
+	\end{tabular}
+	\fi
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Dritte Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\switchcolumn
+	\ifdateiverwaltung 
+	\subsubsection*{Ein- und Ausgabe}
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+	    \rowcolor{lightyellow} \texttt{Write-Host} & Erzeugt Ausgabe auf \texttt{stdout} \\
+	    \texttt{\$x = Read-Host \dq x eingeben\dq} & Benutzereingabe wird nach $x$ gespeichert \\
+	    \rowcolor{lightyellow}\texttt{Clear-Host} & Löscht die Ausgabe auf der Konsole \\
+	\end{tabular}
+	\fi
+	
+	\ifdateiverwaltung 
+	\subsubsection*{Dokumente lesen und schreiben}
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+	    \rowcolor{lightyellow} \texttt{Get-Content} & Textdatei einlesen \\
+	    \texttt{\$x[0]} & Textzeile 0 auswählen \\
+	    \rowcolor{lightyellow} \texttt{Set-Content} & Textdatei überschreiben \\
+	    \texttt{Add-Content} & Text in Textdatei anhängen \\ \hline
+	    
+	    \rowcolor{lightblue} \texttt{Import-Csv} & Text in Textdatei anhängen \\
+	    \texttt{\$x[0].SpaltenName} & Spalte in Objekt 0 auswählen \\
+	    \rowcolor{lightblue} \texttt{ConvertFrom-Csv} & Aus String CSV extrahieren \\
+	    \texttt{Export-Csv} & CSV-Datei schreiben\\ \hline
+	    
+	    \rowcolor{lightgreen} \texttt{Import-Clixml} & XML aus einer Datei einlesen \\
+	    \texttt{\$x.Node.ElemName} & \texttt{Node.ElemName} auswählen \\
+	    \rowcolor{lightgreen} \texttt{ConvertFrom-Xml} & Aus String XML extrahieren \\
+	    \texttt{Export-Xml} & XML-Datei schreiben \\ \hline
+	    
+	    \rowcolor{lightpink} \texttt{ConvertFrom-Json} & Aus String JSON extrahieren \\
+	    \texttt{\$x.propertyName} & \texttt{propertyName} auswählen \\
+	    \texttt{ConvertTo-Json} & JSON-String erzeugen \\
+	\end{tabular}
+	\fi
+	
+	\newpage
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Dritte Seite %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Erste Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\switchcolumn[0]
+	
+		\ifarrays 
+	\subsubsection*{Arrays}
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+	    \rowcolor{lightyellow} \texttt{\$x = \dq a\dq,\dq b\dq,\dq c\dq} & Array definieren \\
+	     \texttt{\$x = @(1,2,3)} & Array definieren \\
+	    \rowcolor{lightyellow} \texttt{\$x = 1..10} & Zahlen von 1 bis 10 in x schreiben \\
+	    \texttt{\$x.Count} & Anzahl der Elemente holen \\
+		\rowcolor{lightyellow}\texttt{\$z = \$x + \$y} & Zwei Arrays verbinden \\ \hline
+	\end{tabular}
+	
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+		\texttt{\$x = (\dq a\dq, \dq b\dq), (\dq c\dq, \dq d\dq)} & Zwei-dimensionales Array erzeugen \\
+		\rowcolor{lightyellow} \texttt{\$x[0][1]} & Element \dq b\dq an $(0,1)$ holen  \\ \hline
+		\texttt{\$x = @\{a = \dq w1\dq; b = \dq w2\dq\}} & Assoziatives Array erzeugen \\ 
+		\rowcolor{lightyellow} \texttt{\$x[\dq a\dq]} bzw. \texttt{\$x.a} & Wert von Index \dq a\dq auslesen\\
+		\texttt{\$Get-Help about\_Arrays} & Anzahl der Elemente holen \\ 
+	\end{tabular}
+	\fi
+	
+	\ifloops 
+	\subsubsection*{Schleifen}
+	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+	    \rowcolor{lightyellow} \texttt{\$x = \dq a\dq,\dq b\dq,\dq c\dq} & Array definieren \\
+	     \texttt{\$x = @(1,2,3)} & Array definieren \\
+	\end{tabular}
+	\fi
+	
+	
+	
+\end{paracol}
+
+\end{document}

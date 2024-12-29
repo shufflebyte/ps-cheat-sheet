@@ -315,12 +315,12 @@ footheight=40pt
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
 	    \rowcolor{lightyellow} \texttt{\$x = \dq a\dq,\dq b\dq,\dq c\dq} & Array definieren \\
 	     \texttt{\$x = @(1,2,3)} & Array definieren \\
-	    \rowcolor{lightyellow} \texttt{\$x = 1..10} & Zahlen von 1 bis 10 in x schreiben \\
-	    \texttt{\$x.Count} & Anzahl der Elemente holen \\
-		\rowcolor{lightyellow}\texttt{\$z = \$x + \$y} & Zwei Arrays verbinden \\ \hline
-	\end{tabular}
-	
-	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
+	    \rowcolor{lightyellow} \texttt{\$x = 1..10} & Zahlen 1 bis 10 in x schreiben \\
+	    \texttt{\$x.Length} & Anzahl der Elemente holen \\
+	    \rowcolor{lightyellow} \texttt{\$z = \$x + \$y} & Zwei Arrays verbinden \\ \hline
+	    \texttt{\$x[-3..-1]} & Letzte 3 Elemente holen \\	    	    
+	    \rowcolor{lightyellow} \texttt{\$x[1,4+6..9]} & Elemente 1,4,6 bis 9 holen \\ \hline
+		
 		\texttt{\$x = (\dq a\dq, \dq b\dq), (\dq c\dq, \dq d\dq)} & Zwei-dimensionales Array erzeugen \\
 		\rowcolor{lightyellow} \texttt{\$x[0][1]} & Element \dq b\dq an $(0,1)$ holen  \\ \hline
 		\texttt{\$x = @\{a = \dq w1\dq; b = \dq w2\dq\}} & Assoziatives Array erzeugen \\ 

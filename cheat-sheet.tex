@@ -51,7 +51,9 @@ footheight=40pt
 \newif\ifarrays \arraystrue
 \newif\ifloops \loopstrue
 \newif \ifcomparisonoperators \comparisonoperatorstrue
-
+\newif \ifverzweigungen \verzweigungentrue
+\newif \iffunctions \functionstrue
+\newif \iffehlerbehandlung \fehlerbehandlungtrue
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Einstellungen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \setlength{\parindent}{0pt}
 
@@ -97,7 +99,7 @@ footheight=40pt
 	    \rowcolor{lightblue}\texttt{Get-Command <cmd>} & Hilfe zu Commands (\texttt{-Verb Get} holt alle Get-Cmdlets) \\
 	    \texttt{Get-Help about\_*} & Zeigt alle About-Docs (z. B. \texttt{about\_if}). \\
 	    \rowcolor{lightblue} \texttt{<var> | Get-Member} & Variablen und Commandlets untersuchen \\
-	    \texttt{<Cmd> -WhatIf} & Bei kritischen Aktionen Ausführung emulieren 
+	    \texttt{<Cmd> -WhatIf} & Ausführung emulieren 
 	\end{tabular}
 	\fi
 	
@@ -106,15 +108,16 @@ footheight=40pt
 	\begin{tabular}{p{0.5\linewidth} p{0.5\linewidth}}
 	    \rowcolor{lightgray} \texttt{New-Alias} & Erstellt neuen Alias \\
 	     \texttt{Remove-Alias} & Löscht einen Alias \\
-	     \rowcolor{lightblue} \texttt{Get-Alias -Definition <cmd>} & Zeigt alle Aliase zu einem Commandlet \\
+	     \rowcolor{lightgray} \texttt{Get-Alias -Definition <cmd>} & Zeigt alle Aliase zu einem Commandlet \\
 	\end{tabular} 
 	\fi
 	
 	\ifkanaele 
 	\subsubsection*{Standardkanäle}
-		\begin{tabular}{p{0.32\linewidth} p{0.68\linewidth}}
-		\rowcolor{lightpeach} \texttt{<a> i> <file>} & Leitet Stream $i$ von $a$ in $file$ \\
-		\texttt{<a> i>\&j} & Leitet Stream $i$ von a in Stream $j$ \\
+		\begin{tabular}{p{0.35\linewidth} p{0.65\linewidth}}
+		\rowcolor{lightpeach} \texttt{<a> i> <file>} & Write Stream $i$ von $a$ in $file$ \\
+		\rowcolor{lightpeach} \texttt{<a> i>> <file>} & Append Stream $i$ von $a$ in $file$ \\
+		\texttt{<a> i>\&j} & Leitet Stream $i$ von a in Str. $j$ \\
 	\end{tabular}
 
 	\begin{tabular}{p{0.04\linewidth} p{0.25\linewidth} p{0.20\linewidth} || p{0.04\linewidth} p{0.30\linewidth}}
@@ -131,7 +134,6 @@ footheight=40pt
 	\switchcolumn
 		\ifdateisysteme
 	\subsubsection*{Dateisystem}
-	Ordner wechseln, Items anlegen, copieren, löschen, Infos holen, pwd, tree?, find?\\
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
 	    \rowcolor{lightpink} \texttt{Set-Location} & In Ordner wechseln \\
 	    \texttt{Get-Location} & Aktuellen Ornerpfad holen \\
@@ -148,11 +150,12 @@ footheight=40pt
 	\fi
 	
 	\ifexcitingstuff 
-	\subsubsection*{Nützliche Commandlets (kleine Auswahl)}
+	\subsubsection*{Ausgaben (kleine Auswahl)}
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
-		\rowcolor{lightpink} \texttt{Get-Date} & Holt das aktuelle Datum \\
 	    \texttt{Write-Host} & Erzeugt eine Ausgabe auf \texttt{stdout} \\
 	    \rowcolor{lightpink} \texttt{Write-Debug 'msg' -Debug} & Schreibt eine Debugnachricht und aktiviert den Debug-Modus \\
+	    \texttt{Get-Help}	     & Hilfe zu \$DebugPrefrence etc. \\
+	    \texttt{about\_PreferenceVariables} & s\\
 	\end{tabular}
 	\fi
 	
@@ -234,7 +237,7 @@ footheight=40pt
 	    \texttt{\$Error} & Liste aller Fehler seit Start der PowerShell\\
 	    \rowcolor{lightblue} \texttt{Get-Item Variable:H*} & Zeigt alle definierten Variablen an, die mit H beginnen\\
 	    \texttt{\$x | Get-Member} & Zeigt Typ, Member, Methoden zu der Variablen an\\
-	    \texttt{Get-Help about\_Variables} & Hilfeartikel zu Variablen\\
+	    \rowcolor{lightblue} \texttt{Get-Help about\_Variables} & Hilfeartikel zu Variablen\\
 	\end{tabular}
 	\fi
 	
@@ -266,6 +269,7 @@ footheight=40pt
 	    \rowcolor{lightyellow}\texttt{\$\{arr\}[100]} & Falls \texttt{arr} nicht existiert, gib null zurück \\
 	\end{tabular}
 	\fi
+	\newpage
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Dritte Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\switchcolumn
 	\ifdateiverwaltung 
@@ -297,7 +301,7 @@ footheight=40pt
 	    
 	    \rowcolor{lightpink} \texttt{ConvertFrom-Json} & Aus String JSON extrahieren \\
 	    \texttt{\$x.propertyName} & \texttt{propertyName} auswählen \\
-	    \texttt{ConvertTo-Json} & JSON-String erzeugen \\
+	    \rowcolor{lightpink} \texttt{ConvertTo-Json} & JSON-String erzeugen \\
 	\end{tabular}
 	\fi
 	
@@ -327,14 +331,58 @@ footheight=40pt
 	
 	\ifloops 
 	\subsubsection*{Schleifen}
-	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
-	    \rowcolor{lightyellow} \texttt{\$x = \dq a\dq,\dq b\dq,\dq c\dq} & Array definieren \\
-	     \texttt{\$x = @(1,2,3)} & Array definieren \\
+	\begin{tabular}{p{0.65\linewidth} p{0.35\linewidth}}
+	    \rowcolor{lightyellow} \texttt{for (\$i=1; \$i -lt 6; \$i++) \{ anweisungen() \}} & zählergesteuert \\
+	    \texttt{while(\$i -lt 5) \{ \}} & kopfgesteuert \\
+		\rowcolor{lightyellow} \texttt{do \{\} while(\$i -lt 5)} & fußgesteuert \\
+		\texttt{do \{\} until(\$i -eq 5)} & mit Abbruchbed. \\
+		\rowcolor{lightyellow} \texttt{foreach (\$i in \$menge) \{ \}} & elementgesteuert \\
 	\end{tabular}
 	\fi
 	
+	\ifverzweigungen 
+	\subsubsection*{Verzweigungen}
+	\begin{tabular}{p{0.6\linewidth} p{0.4\linewidth}}
+	    \rowcolor{lightyellow} \texttt{if (condition)\{\} elseif\{\} else\{\}} & If-Abfrage \\
+	    \texttt{Condition ? True : False} & Ternärer Operator \\
+		\rowcolor{lightyellow} \texttt{switch(\$x)~\{ 1~\{~\$y=\dq~A\dq\}~ \linebreak 2~\{~\$y=\dq~B\dq\} \linebreak \} } & Switch-Case Abfrage:  \\
+	\end{tabular}
+	\fi
 	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Zweite Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\switchcolumn	
 	
+	\iffunctions 
+	\subsubsection*{Funktionen}
+	Alles was nicht \texttt{Write-*} ausgegeben wird, wird zum Rückgabewert der Funktion \\
+	\begin{tabular}{p{0.6\linewidth} p{0.4\linewidth}}
+	\rowcolor{lightyellow} \texttt{function Get-Alter()} & \textbf{positionale} Parameter \\
+	\texttt{function Get-Alter(\$age)} & \textbf{benannte} Parameter \\
+	\rowcolor{lightyellow} \texttt{function Get-Age([int]\$Age)} & \textbf{benannte} und typisierte Parameter \\
+	\texttt{function Get-Alter() \{ param([int] \$Age) \}} & Variante 2 \\ \hline
+	\rowcolor{lightyellow} \texttt{Get-Alter 20} & Aufruf mit \textbf{positionalem} Parameter \\
+	\texttt{Get-Alter -Age 30} & Aufruf mit \textbf{positionalem} Parameter \\ \hline
+	\rowcolor{lightyellow} \texttt{return} & Funktion (vorzeitig) verlassen \\
+	\end{tabular}
+	\fi
+	
+	\iffehlerbehandlung 
+	\subsubsection*{Fehlerbehandlung}
+	\begin{tabular}{p{0.5\linewidth} p{0.5\linewidth}}
+	\rowcolor{lightyellow} \texttt{\$?} & \texttt{\$True} für Erfolg, \texttt{\$False} für Fehlschlag \\
+	\texttt{<a> \&\& <b>} & Führt $<$b$>$ aus, falls $<$a$>$ erfolgreich \\
+	\rowcolor{lightyellow} \texttt{<a> || <b>} & Führt $<$b$>$ aus, falls $<$a$>$ \textbf{nicht} erfolgreich \\
+	\texttt{try\{~\#unsafe \} catch\{~\#catchIt \} finally\{~\#after \}} & Try unsafe code, Catch error and finally do something \\
+	\rowcolor{lightyellow} \texttt{\$\_} & Zugriff auf Error-Objekt innerhalb des catch-Blocks \\
+	\end{tabular}
+	\textbf{Error-Action} und \textbf{Warning-Action}: \\\texttt{Stop}, \texttt{Continue}, \texttt{SilentlyContinue}, \texttt{Inquire} \\
+	\begin{tabular}{p{1.05\linewidth }}
+	    \rowcolor{lightyellow} \texttt{Get-Help about\_CommonParameters} \\ 
+	\end{tabular} 
+	\fi
+	\switchcolumn
+		Reguläre Ausdrücke \\
+	Module einbinden
 \end{paracol}
 
 \end{document}

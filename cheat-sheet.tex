@@ -4,7 +4,7 @@
 footheight=40pt
 ]{scrartcl}
 \usepackage{ngerman}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{lastpage}	% get lastPageRef
 \usepackage{amsmath}
@@ -13,7 +13,7 @@ footheight=40pt
 \usepackage{tabularx}
 \usepackage{paracol}
 \usepackage[table]{xcolor}
-\usepackage{array} % Für erweiterte Tabellenformate
+\usepackage{array} % FÃ¼r erweiterte Tabellenformate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Page Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{geometry}
@@ -26,17 +26,17 @@ footheight=40pt
  bottom=20mm
  }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Kopf- und Fußzeilen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Kopf- und FuÃŸzeilen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[headsepline]{scrlayer-scrpage}
 \setheadsepline{1pt}
 \pagestyle{scrheadings}
 
-\ohead{LF10b - Lehrkraft: Soulier - Version 0.1 $\alpha$}%\includegraphics[height=1.7cm]{drslogo.png}}
+\ohead{LF10b - Lehrkraft: Soulier - Version 1.1.0-beta Schuljahr 2025/2026}%\includegraphics[height=1.7cm]{drslogo.png}}
 \ihead{\textbf{\LARGE PowerShell - Cheat Sheet}}
 %\ohead{\LARGE $ \mathbf{f(xx)}\ \ $ \\ \small Herr Soulier}
 %\ifoot{innen}
 \cfoot{Seite \thepage\ von \pageref{LastPage}}
-%\ofoot{außen}
+%\ofoot{auÃŸen}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Definition der Variablen, um Textteile ein- oder auszublenden %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -54,6 +54,7 @@ footheight=40pt
 \newif \ifverzweigungen \verzweigungentrue
 \newif \iffunctions \functionstrue
 \newif \iffehlerbehandlung \fehlerbehandlungtrue
+\newif \ifregularexpressions \regularexpressionstrue
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Einstellungen %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \setlength{\parindent}{0pt}
 
@@ -68,7 +69,7 @@ footheight=40pt
 % Definition der Farben
 % Definition von blassen Farben
 \definecolor{lightblue}{RGB}{230, 240, 255}  % Helles Blau
-\definecolor{lightgreen}{RGB}{240, 255, 240} % Helles Grün
+\definecolor{lightgreen}{RGB}{240, 255, 240} % Helles GrÃ¼n
 \definecolor{lightyellow}{RGB}{255, 250, 220} % Helles Gelb
 \definecolor{lightpink}{RGB}{255, 230, 240}  % Helles Rosa
 \definecolor{lightgray}{RGB}{245, 245, 245}  % Helles Grau
@@ -93,13 +94,13 @@ footheight=40pt
     \ifhilfe
     \subsubsection*{Hilfefunktionen}
     \begin{tabular}{p{0.44\linewidth} p{0.56\linewidth}}
-	    \rowcolor{lightblue}\texttt{Update-Help} & Als Admin: aktualisiert Hilfedateien\\
+	    \rowcolor{lightblue}\texttt{Update-Help -UICulture en-US} & Als Admin: aktualisiert Hilfedateien \\
 	    \texttt{Get-Help <cmd>} & Zeigt Hilfe zu Cmdlet \\
 	    \texttt{Get-Help *Item} & Zeigt alle Cmdlets, die mit Item enden\\
 	    \rowcolor{lightblue}\texttt{Get-Command <cmd>} & Hilfe zu Commands (\texttt{-Verb Get} holt alle Get-Cmdlets) \\
 	    \texttt{Get-Help about\_*} & Zeigt alle About-Docs (z. B. \texttt{about\_if}). \\
 	    \rowcolor{lightblue} \texttt{<var> | Get-Member} & Variablen und Commandlets untersuchen \\
-	    \texttt{<Cmd> -WhatIf} & Ausführung emulieren 
+	    \texttt{<Cmd> -WhatIf} & AusfÃ¼hrung emulieren 
 	\end{tabular}
 	\fi
 	
@@ -107,13 +108,13 @@ footheight=40pt
 	\subsubsection*{Aliase}
 	\begin{tabular}{p{0.5\linewidth} p{0.5\linewidth}}
 	    \rowcolor{lightgray} \texttt{New-Alias} & Erstellt neuen Alias \\
-	     \texttt{Remove-Alias} & Löscht einen Alias \\
+	     \texttt{Remove-Alias} & LÃ¶scht einen Alias \\
 	     \rowcolor{lightgray} \texttt{Get-Alias -Definition <cmd>} & Zeigt alle Aliase zu einem Commandlet \\
 	\end{tabular} 
 	\fi
 	
 	\ifkanaele 
-	\subsubsection*{Standardkanäle}
+	\subsubsection*{StandardkanÃ¤le}
 		\begin{tabular}{p{0.35\linewidth} p{0.65\linewidth}}
 		\rowcolor{lightpeach} \texttt{<a> i> <file>} & Write Stream $i$ von $a$ in $file$ \\
 		\rowcolor{lightpeach} \texttt{<a> i>> <file>} & Append Stream $i$ von $a$ in $file$ \\
@@ -135,24 +136,26 @@ footheight=40pt
 		\ifdateisysteme
 	\subsubsection*{Dateisystem}
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
-	    \rowcolor{lightpink} \texttt{Set-Location} & In Ordner wechseln \\
-	    \texttt{Get-Location} & Aktuellen Ornerpfad holen \\
+	    \rowcolor{lightpink} \texttt{Set-Location} & In Pfad wechseln \\
+	    \texttt{Get-Location} & Aktuellen Pfad holen \\
 	    \rowcolor{lightpink} \texttt{New-Item} & Erstellt Datei oder Ordner \\
 	    \texttt{Copy-Item} & Kopiert Datei oder Ordner \\
 	    \rowcolor{lightpink} \texttt{Move-Item} & Bewegt Datei oder Ordner \\
-	    \texttt{Remove-Item} & Löscht Datei oder Ordner \\
+	    \texttt{Remove-Item} & LÃ¶scht Datei oder Ordner \\
 	    \rowcolor{lightpink} \texttt{Get-Item} & Holt Meta-Informationen eines Items (z. B. Datei) ein\\
-	    \rowcolor{lightpink} \texttt{Set-Item} & Setzt Meta-Informationen\\
-	    \texttt{Get-Content} & Liest Inhalt einer Datei ein\\
-	    \rowcolor{lightpink} \texttt{Get-ChildItem} & Holt ein Item und seine Kinder-Items (Unterordner)\\
-	    \texttt{Tree} & Zeigt Ordner rekursiv in Baumstruktur (nicht PS)\\
+	    \texttt{Set-Item} & Setzt Meta-Informationen\\
+	    \rowcolor{lightpink} \texttt{Get-Content} & Liest Inhalt einer Datei ein\\
+	    \texttt{Set-Content} & Ersetzt den Inhalt einer Datei \\
+	    \rowcolor{lightpink} \texttt{Add-Content} & FÃ¼gt Inhalt in einer Datei an\\
+	    \texttt{Get-ChildItem} & Holt ein Item und seine Kinder-Items (Unterordner)\\
+	    \rowcolor{lightpink} \texttt{Tree} & Zeigt Ordner rekursiv in Baumstruktur (nicht PS)\\
 	\end{tabular}
 	\fi
 	
 	\ifexcitingstuff 
 	\subsubsection*{Ausgaben (kleine Auswahl)}
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
-	    \texttt{Write-Host} & Erzeugt eine Ausgabe auf \texttt{stdout} \\
+	    \texttt{Write-Output} & Erzeugt eine Ausgabe auf \texttt{stdout} \\
 	    \rowcolor{lightpink} \texttt{Write-Debug 'msg' -Debug} & Schreibt eine Debugnachricht und aktiviert den Debug-Modus \\
 	    \texttt{Get-Help}	     & Hilfe zu \$DebugPrefrence etc. \\
 	    \texttt{about\_PreferenceVariables} & s\\
@@ -161,12 +164,13 @@ footheight=40pt
 	
 	\ifcomparisonoperators 
 	\subsubsection*{Grundlagen Vergleichsoperatoren}
-	Vergleichsoperatoren können überall da genutzt werden, wo Ausdrücke ausgewertet werden.\\
+	%Vergleichsoperatoren kÃ¶nnen Ã¼berall da genutzt werden, wo AusdrÃ¼cke ausgewertet werden.\\
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
 		\rowcolor{lightpink} \texttt{\$a -eq 2} & Vergleich auf Gleichheit \\
-		 \texttt{\$a -gt 2} & Vergleich auf Größer \\
+		 \texttt{\$a -gt 2} & Vergleich auf GrÃ¶ÃŸer \\
 		\rowcolor{lightpink} \texttt{\$a -like \dq W*\dq} & Vergleich auf Wildcard-Pattern eines Strings \\
-	    \multicolumn{2}{l}{\texttt{Get-Help about\_Comparison\_Operators}} \\
+		 \texttt{\$a -in \$x} & Vergleich, ob in Liste enthalten \\
+	   % \multicolumn{2}{l}{\texttt{Get-Help about\_Comparison\_Operators}} \\
 	\end{tabular}
 	\fi
 	
@@ -178,9 +182,9 @@ footheight=40pt
 	\begin{tabular}{p{0.42\linewidth} p{0.58\linewidth}}
 		\rowcolor{lightgreen} \texttt{<a> | <b>} & Leitet \texttt{stdout} von $a$ in \texttt{stdin} von $b$ \\
 	    \texttt{Where-Object\{ \}} & Filtert Objekte basierend auf einer Bedingung. \\
-	    \rowcolor{lightgreen} \texttt{Select-Object} & Wählt bestimmte Eigenschaften eines Objekts aus. \\
+	    \rowcolor{lightgreen} \texttt{Select-Object} & WÃ¤hlt bestimmte Eigenschaften eines Objekts aus. \\
 	    \texttt{Sort-Object} & Sortiert Objekte nach einem bestimmten Kriterium. \\
-	    \rowcolor{lightgreen} \texttt{Foreach-Object\{ \}} & Anweisungen pro Objekt ausführen \\
+	    \rowcolor{lightgreen} \texttt{Foreach-Object\{ \}} & Anweisungen pro Objekt ausfÃ¼hren \\
 	    \texttt{Group-Object} & Gruppiert anhand einer Eigenschaft der Objekte. \\
 	    \rowcolor{lightgreen} \texttt{Get-Member} & Metadaten zu Objekt ausgeben \\
 	    \texttt{Measure-Object} & Min, Max, Sum, Avg \\
@@ -188,7 +192,7 @@ footheight=40pt
 	    \texttt{Format-List} & Ausgabe formatieren (viele Format-Varianten) \\
 	    \rowcolor{lightgreen} \texttt{Tee-Object <a> | <b>} & Splittet \texttt{stdout} in $a$ und $b$ auf \\
 	    \texttt{Get-Help about\_Pipelines} & Hilfeartikel zu Pipelines \\ \hline
-	    \rowcolor{lightgreen} \texttt{Out-Null} & Unterdrückt Output in einer Pipeline \\
+	    \rowcolor{lightgreen} \texttt{Out-Null} & UnterdrÃ¼ckt Output in einer Pipeline \\
 	    \texttt{Out-Printer} & Sendet Output an  Drucker \\
 	    \rowcolor{lightgreen} \texttt{Out-File} & Sendet Output an Datei \\
 	\end{tabular}
@@ -208,8 +212,8 @@ footheight=40pt
 	\end{tabular} 
 	
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
-	    \rowcolor{lightyellow} \texttt{\$args.Count} & Anzahl der Argumente prüfen \\
-	    \rowcolor{lightyellow} \texttt{\$args.[i]} & \textbf{Positionale} Argumente an Stelle $i$ auslesen \\
+	    \rowcolor{lightyellow} \texttt{\$args.Count} & Anzahl der Argumente prÃ¼fen \\
+	    \rowcolor{lightyellow} \texttt{\$args[i]} & \textbf{Positionale} Argumente an Stelle $i$ auslesen \\
 	\end{tabular}
 	
 		\begin{tabular}{|p{1.05\linewidth }|}
@@ -229,8 +233,8 @@ footheight=40pt
 	    \texttt{[int] \$x = \dq3.45\dq\ -as [Int]} & Konvertiert einen String-Wert in Int und schreibt ihn nach \$x \\
 	    \rowcolor{lightblue} \texttt{\$x.GetType()} & Liefert Typinfos von \$x \\
 		\texttt{\$x.GetType(). FullName} & Liefert Typnamen von \$x \\
-	    \rowcolor{lightblue} \texttt{Clear-Variable x} & Löscht \textbf{Inhalt} von \$x \\
-	    \texttt{Remove-Variable x} & Löscht \textbf{Deklaration} von \$x \\
+	    \rowcolor{lightblue} \texttt{Clear-Variable x} & LÃ¶scht \textbf{Inhalt} von \$x \\
+	    \texttt{Remove-Variable x} & LÃ¶scht \textbf{Deklaration} von \$x \\
 	    \rowcolor{lightblue} \texttt{\$true \$false} & Wahr/falsch \\
 	    \texttt{\$Home} & Home-Folder des Nutzers\\
 	    \rowcolor{lightblue} \texttt{\$PSHome} & Installationsordner von PS\\
@@ -246,17 +250,17 @@ footheight=40pt
 	
 	\ifexcitingstuff 
 	\subsubsection*{Umgang mit Strings}
-	\begin{tabular}{p{0.52\linewidth} p{0.48\linewidth}}
+	\begin{tabular}{p{0.54\linewidth} p{0.46\linewidth}}
 	    \rowcolor{lightgreen} \texttt{\dq Hi\dq} \ bzw. \texttt{'Hi'} bzw. \texttt{@'Hi@'} & Versch. Stringliterale (@-Notation: \dq Here-String\dq ) \\
 	    \texttt{\dq a\dq + \$x + \dq c\dq} & Konkatenation \\
-	    \rowcolor{lightgreen} \texttt{\dq PC \$nr\dq} & Ausdruckauflösung \\
-	    \texttt{\dq Date: \$(Get-Date)\dq} & Ausdruckauflösung \\
-	    \rowcolor{lightgreen} \texttt{\dq x:\textbackslash\$(\$pc)\_VHD.vhdx\dq } & Ausdruckauflösung \\
+	    \rowcolor{lightgreen} \texttt{\dq PC \$nr\dq} & AusdruckauflÃ¶sung \\
+	    \texttt{\dq Date: \$(Get-Date)\dq} & AusdruckauflÃ¶sung \\
+	    \rowcolor{lightgreen} \texttt{\dq x:\textbackslash\$(\$pc)\_VHD.vhdx\dq } & AusdruckauflÃ¶sung \\
 	    \texttt{\$a.Substring(4,3)} & Text extrahieren $[5,7]$ \\
 	    \rowcolor{lightgreen}\texttt{\$myArr = \$x -Split \dq<del>\dq} & Splitten String am Delimiter $<$del$>$ auf  \\
 	    \texttt{\$x = \$myArr -Join\dq$<$del$>$\dq} & Verbindet Teilstringe aus myArr in x \\
-	    \rowcolor{lightgreen}\texttt{\$x.replace(\dq ü\dq, \dq ue\dq)} & Case-Sensitives Ersetzten von Teilstrings \\
-	    \texttt{\$x -replace \dq\textbackslash bÖ\dq, \dq Oe\dq} & Ersetzten von Teilstrings m.H. von regulären Ausdrücken \\
+	    \rowcolor{lightgreen}\texttt{\$x.replace(\dq Ã¼\dq, \dq ue\dq)} & Case-Sensitives Ersetzen von Teilstrings \\
+	    \texttt{\$x -replace \dq \textbackslash d \dq, \dq X\dq} & Ersetzten von Teilstrings m.H. von regulÃ¤ren AusdrÃ¼cken \\
 	    \rowcolor{lightgreen}\texttt{\dq\dq\ | Get-Member -MemberType Method} & String-Methoden ansehen \\
 	\end{tabular}
 	\fi
@@ -265,8 +269,8 @@ footheight=40pt
 	\subsubsection*{Umgang mit nicht definierten Variablen}
 	\begin{tabular}{p{0.3\linewidth} p{0.7\linewidth}}
 	    \rowcolor{lightyellow} \texttt{\$x ??= \dq n/a\dq} & Nimm x falls definiert, ansonsten schreibe Standardwert hinein \\
-	     \texttt{\$\{x\}?.Property} & Wähle Property aus, falls existent, ansonsten null zurückgeben \\
-	    \rowcolor{lightyellow}\texttt{\$\{arr\}[100]} & Falls \texttt{arr} nicht existiert, gib null zurück \\
+	     \texttt{\$\{x\}?.Property} & WÃ¤hle Property aus, falls existent, ansonsten \$null zurÃ¼ckgeben \\
+	    \rowcolor{lightyellow}\texttt{\$\{arr\}[100]} & Falls \texttt{arr[100]} nicht existiert, gib \$null zurÃ¼ck \\
 	\end{tabular}
 	\fi
 	\newpage
@@ -275,9 +279,9 @@ footheight=40pt
 	\ifdateiverwaltung 
 	\subsubsection*{Ein- und Ausgabe}
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
-	    \rowcolor{lightyellow} \texttt{Write-Host} & Erzeugt Ausgabe auf \texttt{stdout} \\
-	    \texttt{\$x = Read-Host \dq x eingeben\dq} & Benutzereingabe wird nach $x$ gespeichert \\
-	    \rowcolor{lightyellow}\texttt{Clear-Host} & Löscht die Ausgabe auf der Konsole \\
+	    \rowcolor{lightyellow} \texttt{Write-Output} & Erzeugt Ausgabe auf \texttt{stdout} \\
+	    \texttt{\$x = Read-Host \dq x eingeben\dq} & Benutzereingabe wird nach \$x gespeichert \\
+	    \rowcolor{lightyellow}\texttt{Clear-Host} & LÃ¶scht die Ausgabe auf der Konsole \\
 	\end{tabular}
 	\fi
 	
@@ -285,22 +289,17 @@ footheight=40pt
 	\subsubsection*{Dokumente lesen und schreiben}
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
 	    \rowcolor{lightyellow} \texttt{Get-Content} & Textdatei einlesen \\
-	    \texttt{\$x[0]} & Textzeile 0 auswählen \\
-	    \rowcolor{lightyellow} \texttt{Set-Content} & Textdatei überschreiben \\
-	    \texttt{Add-Content} & Text in Textdatei anhängen \\ \hline
+	    \texttt{\$x[0]} & Textzeile 0 auswÃ¤hlen \\
+	    \rowcolor{lightyellow} \texttt{Set-Content} & Textdatei Ã¼berschreiben \\
+	    \texttt{Add-Content} & Text in Textdatei anhÃ¤ngen \\ \hline
 	    
-	    \rowcolor{lightblue} \texttt{Import-Csv} & Text in Textdatei anhängen \\
-	    \texttt{\$x[0].SpaltenName} & Spalte in Objekt 0 auswählen \\
+	    \rowcolor{lightblue} \texttt{Import-Csv} & Text in Textdatei anhÃ¤ngen \\
+	    \texttt{\$x[0].SpaltenName} & Spalte in Objekt 0 auswÃ¤hlen \\
 	    \rowcolor{lightblue} \texttt{ConvertFrom-Csv} & Aus String CSV extrahieren \\
 	    \texttt{Export-Csv} & CSV-Datei schreiben\\ \hline
 	    
-	    \rowcolor{lightgreen} \texttt{Import-Clixml} & XML aus einer Datei einlesen \\
-	    \texttt{\$x.Node.ElemName} & \texttt{Node.ElemName} auswählen \\
-	    \rowcolor{lightgreen} \texttt{ConvertFrom-Xml} & Aus String XML extrahieren \\
-	    \texttt{Export-Xml} & XML-Datei schreiben \\ \hline
-	    
 	    \rowcolor{lightpink} \texttt{ConvertFrom-Json} & Aus String JSON extrahieren \\
-	    \texttt{\$x.propertyName} & \texttt{propertyName} auswählen \\
+	    \texttt{\$x.propertyName} & \texttt{propertyName} auswÃ¤hlen \\
 	    \rowcolor{lightpink} \texttt{ConvertTo-Json} & JSON-String erzeugen \\
 	\end{tabular}
 	\fi
@@ -313,28 +312,28 @@ footheight=40pt
 		\ifarrays 
 	\subsubsection*{Arrays}
 	\begin{tabular}{p{0.4\linewidth} p{0.6\linewidth}}
-	    \rowcolor{lightyellow} \texttt{\$x = \dq a\dq,\dq b\dq,\dq c\dq} & Array definieren \\
+	    \rowcolor{lightpeach} \texttt{\$x = \dq a\dq,\dq b\dq,\dq c\dq} & Array definieren \\
 	     \texttt{\$x = @(1,2,3)} & Array definieren \\
-	    \rowcolor{lightyellow} \texttt{\$x = 1..10} & Zahlen 1 bis 10 in x schreiben \\
+	    \rowcolor{lightpeach} \texttt{\$x = 1..10} & Zahlen 1 bis 10 in x schreiben \\
 	    \texttt{\$x.Length} & Anzahl der Elemente holen \\
-	    \rowcolor{lightyellow} \texttt{\$z = \$x + \$y} & Zwei Arrays verbinden \\ \hline
+	    \rowcolor{lightpeach} \texttt{\$z = \$x + \$y} & Zwei Arrays verbinden \\ \hline
 	    \texttt{\$x[-3..-1]} & Letzte 3 Elemente holen \\	    	    
-	    \rowcolor{lightyellow} \texttt{\$x[1,4+6..9]} & Elemente 1,4,6 bis 9 holen \\ \hline
+	    \rowcolor{lightpeach} \texttt{\$x[1,4+6..9]} & Elemente 1,4,6 bis 9 holen \\ \hline
 		
 		\texttt{\$x = (\dq a\dq, \dq b\dq), (\dq c\dq, \dq d\dq)} & Zwei-dimensionales Array erzeugen \\
-		\rowcolor{lightyellow} \texttt{\$x[0][1]} & Element \dq b\dq an $(0,1)$ holen  \\ \hline
+		\rowcolor{lightpeach} \texttt{\$x[0][1]} & Element \dq b\dq an $(0,1)$ holen  \\ \hline
 		\texttt{\$x = @\{a = \dq w1\dq; b = \dq w2\dq\}} & Assoziatives Array erzeugen \\ 
-		\rowcolor{lightyellow} \texttt{\$x[\dq a\dq]} bzw. \texttt{\$x.a} & Wert von Index \dq a\dq auslesen\\
-		\texttt{\$Get-Help about\_Arrays} & Anzahl der Elemente holen \\ 
+		\rowcolor{lightpeach} \texttt{\$x[\dq a\dq]} bzw. \texttt{\$x.a} & Wert von Index \dq a\dq auslesen\\
+		\texttt{\$Get-Help about\_Arrays} & Hilfeartikel zu Arrays aufrufen \\ 
 	\end{tabular}
 	\fi
 	
 	\ifloops 
 	\subsubsection*{Schleifen}
 	\begin{tabular}{p{0.65\linewidth} p{0.35\linewidth}}
-	    \rowcolor{lightyellow} \texttt{for (\$i=1; \$i -lt 6; \$i++) \{ anweisungen() \}} & zählergesteuert \\
-	    \texttt{while(\$i -lt 5) \{ \}} & kopfgesteuert \\
-		\rowcolor{lightyellow} \texttt{do \{\} while(\$i -lt 5)} & fußgesteuert \\
+	    \rowcolor{lightyellow} \texttt{for (\$i=1; \$i -lt 6; \$i++) \{Â anweisungen() \}} & zÃ¤hlergesteuert \\
+	    \texttt{while(\$i -lt 5) \{Â \}} & kopfgesteuert \\
+		\rowcolor{lightyellow} \texttt{do \{\} while(\$i -lt 5)} & fuÃŸgesteuert \\
 		\texttt{do \{\} until(\$i -eq 5)} & mit Abbruchbed. \\
 		\rowcolor{lightyellow} \texttt{foreach (\$i in \$menge) \{ \}} & elementgesteuert \\
 	\end{tabular}
@@ -344,8 +343,9 @@ footheight=40pt
 	\subsubsection*{Verzweigungen}
 	\begin{tabular}{p{0.6\linewidth} p{0.4\linewidth}}
 	    \rowcolor{lightyellow} \texttt{if (condition)\{\} elseif\{\} else\{\}} & If-Abfrage \\
-	    \texttt{Condition ? True : False} & Ternärer Operator \\
-		\rowcolor{lightyellow} \texttt{switch(\$x)~\{ 1~\{~\$y=\dq~A\dq\}~ \linebreak 2~\{~\$y=\dq~B\dq\} \linebreak \} } & Switch-Case Abfrage:  \\
+	    \texttt{Condition ? True : False} & TernÃ¤rer Operator \\
+		\rowcolor{lightyellow} \texttt{switch(\$x)~\{ 1~\{~\$y= \dq A\dq\}~ \linebreak 2~\{~\$y= \dq B\dq\} \linebreak \} } & Switch-Case Abfrage: x=1 ? dann y = \dq A\dq usw. \\
+		
 	\end{tabular}
 	\fi
 	
@@ -354,35 +354,58 @@ footheight=40pt
 	
 	\iffunctions 
 	\subsubsection*{Funktionen}
-	Alles was nicht \texttt{Write-*} ausgegeben wird, wird zum Rückgabewert der Funktion \\
+	Alles was nicht \texttt{Write-*} ausgegeben wird, wird zum \textbf{RÃ¼ckgabewert} der Funktion \\
 	\begin{tabular}{p{0.6\linewidth} p{0.4\linewidth}}
-	\rowcolor{lightyellow} \texttt{function Get-Alter()} & \textbf{positionale} Parameter \\
+	\rowcolor{lightgreen} \texttt{function Get-Alter()} & \textbf{positionale} Parameter \\
 	\texttt{function Get-Alter(\$age)} & \textbf{benannte} Parameter \\
-	\rowcolor{lightyellow} \texttt{function Get-Age([int]\$Age)} & \textbf{benannte} und typisierte Parameter \\
-	\texttt{function Get-Alter() \{ param([int] \$Age) \}} & Variante 2 \\ \hline
-	\rowcolor{lightyellow} \texttt{Get-Alter 20} & Aufruf mit \textbf{positionalem} Parameter \\
-	\texttt{Get-Alter -Age 30} & Aufruf mit \textbf{positionalem} Parameter \\ \hline
-	\rowcolor{lightyellow} \texttt{return} & Funktion (vorzeitig) verlassen \\
+	\rowcolor{lightgreen}\begin{footnotesize} \texttt{function Get-Age([int]\$age)} \end{footnotesize}& \textbf{benannte} und typisierte Parameter \\
+	\texttt{function Get-Alter() \{ param([int] \$age) \}} & Variante 2 \\ \hline
+	\rowcolor{lightgreen} \texttt{Get-Alter 20} & Aufruf mit \textbf{positionalem} Parameter \\
+	\texttt{Get-Alter -age 30} & Aufruf mit \textbf{benanntem} Parameter \\ \hline
+	\rowcolor{lightgreen} \texttt{return} & Funktion (vorzeitig) verlassen. \\
 	\end{tabular}
 	\fi
 	
 	\iffehlerbehandlung 
 	\subsubsection*{Fehlerbehandlung}
-	\begin{tabular}{p{0.5\linewidth} p{0.5\linewidth}}
-	\rowcolor{lightyellow} \texttt{\$?} & \texttt{\$True} für Erfolg, \texttt{\$False} für Fehlschlag \\
-	\texttt{<a> \&\& <b>} & Führt $<$b$>$ aus, falls $<$a$>$ erfolgreich \\
-	\rowcolor{lightyellow} \texttt{<a> || <b>} & Führt $<$b$>$ aus, falls $<$a$>$ \textbf{nicht} erfolgreich \\
+	\begin{tabular}{p{0.43\linewidth} p{0.57\linewidth}}
+	\rowcolor{lightblue} \texttt{\$?} & \texttt{\$True} fÃ¼r Erfolg, \texttt{\$False} fÃ¼r Fehlschlag \\
+	\texttt{<a> \&\& <b>} & FÃ¼hrt $<$b$>$ aus, falls $<$a$>$ erfolgreich \\
+	\rowcolor{lightblue} \texttt{<a> || <b>} & FÃ¼hrt $<$b$>$ aus, falls $<$a$>$ \textbf{nicht} erfolgreich \\
 	\texttt{try\{~\#unsafe \} catch\{~\#catchIt \} finally\{~\#after \}} & Try unsafe code, Catch error and finally do something \\
-	\rowcolor{lightyellow} \texttt{\$\_} & Zugriff auf Error-Objekt innerhalb des catch-Blocks \\
+	\rowcolor{lightblue} \texttt{\$\_} & Zugriff auf Error-Objekt innerhalb des catch-Blocks \\
 	\end{tabular}
+
+	\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Zweite Spalte %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\switchcolumn
+	\begin{tabular}{p{0.43\linewidth} p{0.57\linewidth}}
+		\rowcolor{lightblue} \texttt{Write-Error \dq Fehler bei ... \$\_\dq} & Fehlerausgabe im Catch-Block mit Zugriff auf Error-Objekt \\
+		\texttt{throw \dq Fehler: Skript gestoppt} & Einen eigenen Fehler erzeugen \\
+	\end{tabular}
+	
 	\textbf{Error-Action} und \textbf{Warning-Action}: \\\texttt{Stop}, \texttt{Continue}, \texttt{SilentlyContinue}, \texttt{Inquire} \\
 	\begin{tabular}{p{1.05\linewidth }}
-	    \rowcolor{lightyellow} \texttt{Get-Help about\_CommonParameters} \\ 
+	    \rowcolor{lightblue} \texttt{Get-Help about\_CommonParameters} \\ 
 	\end{tabular} 
+	\ifregularexpressions 
+	\subsubsection*{RegulÃ¤re AusdrÃ¼cke}
+	\begin{tabular}{p{0.5\linewidth} p{0.5\linewidth}}	
+	\rowcolor{lightpink} \texttt{\$z -match \dq Peter\dq} & Liefert \$true bzw. \$false zurÃ¼ck. Falls \$true steht Ergebnis in \$matches[0]\\ \hline
+	\texttt{\$z -match \dq \^{}Peter\dq} & Anker Textbeginn \\
+	\rowcolor{lightpink} \texttt{\$z -match \dq Peter\$\dq} & Anker Textende\\ \hline
+	\texttt{\$z -match \dq \textbackslash w\dq} & PrÃ¼fe auf word: alphanumerische Zeichen \\
+	\rowcolor{lightpink} \texttt{\$z -match \dq \textbackslash d\dq} & Digit\\
+	\texttt{\$z -match \dq \textbackslash s\dq} & Whitespace \\
+	\rowcolor{lightpink} \texttt{\$z -match \dq \textbackslash D \dq} & Not Digit (geht bei allen Character Classes)\\
+	\texttt{\$z -match \dq [Ã¤Ã¶Ã¼ÃŸ]\dq} & Character Set: z. B. nur dt. Umlaute finden \\ \hline
+	\rowcolor{lightpink} \texttt{\$z -match \dq \textbackslash d\{4,\} \dq} & Quantifiers: mindestens 4x hintereinander \\
+	\texttt{+ , * \{1,3\}, \{2\}} & von links nach rechts: mind. 1x, beliebig oft, 1 bis 3 Mal, genau 2 Mal \\ \hline
+	\rowcolor{lightpink} \texttt{\$z = \dq alf@beta.com \dq\$z -match \dq (\textbackslash w*)(@)(\textbackslash w*).(com) \dq} & Capturing Groups: Jeder Ausdruck in Klammern kann Ã¼ber \texttt{\$matches[i]} abgerufen werden. $i$ steht fÃ¼r die Klammer (von 0 beginnend) \\
+	\end{tabular} 
+	
+
 	\fi
-	\switchcolumn
-		Reguläre Ausdrücke \\
-	Module einbinden
 \end{paracol}
 
 \end{document}
